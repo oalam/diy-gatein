@@ -1,0 +1,13 @@
+#loads configs - versions and directories etc.
+. ${OPENSHIFT_REPO_DIR}.openshift/action_hooks/load_configs
+
+if [[ ! -f ${GATEIN_DIR}bin/jboss-cli.sh ]]; then
+  echo "Error: couldn't find jboss-cli.sh executable at ${GATEIN_DIR}bin/jboss-cli.sh"
+else
+  echo "Stopping JBoss application"
+
+  cd ${GATEIN_DIR}bin
+  ./jboss-cli.sh --connect --command=:shutdown
+fi
+
+

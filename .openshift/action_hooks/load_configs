@@ -1,0 +1,7 @@
+
+GATEIN_VERSION="3.5.0"
+GATEIN_DIR="${OPENSHIFT_DATA_DIR}GateIn-${GATEIN_VERSION}.Final-jbossas7/"
+GATEIN_TAR="GateIn-${GATEIN_VERSION}.Final-jbossas7.zip"
+GATEIN_URL="http://downloads.jboss.org/gatein/Releases/Portal/${GATEIN_VERSION}.Final/${GATEIN_TAR}"
+
+return 0

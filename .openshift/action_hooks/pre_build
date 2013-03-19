@@ -1,0 +1,39 @@
+#loads configs - versions and directories etc.
+. ${OPENSHIFT_REPO_DIR}.openshift/action_hooks/load_configs
+
+# validate versions
+if [ "$GATEIN_VERSION" \< "3.5.0" ]; then
+	echo "Error: GateIn version ${GATEIN_VERSION} not supported, use version 3.5.0 or higher"
+	return 1
+fi
+
+
+if ! [[ -d ${GATEIN_DIR} ]]; then
+
+  echo "Installing GateIn ${GATEIN_VERSION}"
+
+  # Get Install
+  echo "Downloading file ${GATEIN_URL}"
+  curl -o ${OPENSHIFT_DATA_DIR}${GATEIN_TAR} ${GATEIN_URL}
+
+  # Unzip
+  unzip ${OPENSHIFT_DATA_DIR}${GATEIN_TAR} -d ${OPENSHIFT_DATA_DIR}
+
+  # Remove Zip
+  rm ${OPENSHIFT_DATA_DIR}${GATEIN_TAR}
+ 
+  # Verify GateIn install
+  if ! [[ -f ${GATEIN_DIR}bin/standalone.sh ]]; then
+    echo "Error installing GateIn ${GATEIN_VERSION} to ${GATEIN_DIR}"
+    exit 1
+  fi
+
+  echo "Patching conf and modules files"
+  cp ${OPENSHIFT_REPO_DIR}misc/bin/* ${GATEIN_DIR}/bin
+  cp -R ${OPENSHIFT_REPO_DIR}misc/modules/* ${GATEIN_DIR}/modules
+
+
+  # here just for sed sample ...
+  #sed -ig 's/OPENSHIFT_INTERNAL_IP/'$OPENSHIFT_INTERNAL_IP'/g' ${GATEIN_VERSION}misc/bin/server.xml
+  
+fi  
